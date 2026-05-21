@@ -1,0 +1,22 @@
+# ESP-IDF
+firmware/build/
+firmware/sdkconfig
+firmware/sdkconfig.old
+firmware/managed_components/
+
+# Python / tooling
+.venv/
+__pycache__/
+
+# Node/Vite web app
+web/node_modules/
+web/dist/
+web/.vite/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,6 @@
+{"cmd":"set_source","source":"esp_adc"}
+{"cmd":"set_adc","fs":80000,"channels":[4],"atten":"12db"}
+{"cmd":"set_ads1256","fs":30000,"channel":"AIN0-AINCOM","pga":1,"buffer":false}
+{"cmd":"arm","edge":"rising","level_mv":1200,"hyst_mv":20,"pre":0.25,"samples":4096}
+{"cmd":"stream","enabled":true}
+{"cmd":"stop"}
