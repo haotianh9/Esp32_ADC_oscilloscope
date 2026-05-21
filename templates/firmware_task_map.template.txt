@@ -1,0 +1,5 @@
+Task 1: acquisition_fast_adc
+Task 2: acquisition_ads1256
+Task 3: trigger_engine
+Task 4: usb_stream_task
+Task 5: command_task
