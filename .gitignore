@@ -7,11 +7,14 @@ firmware/managed_components/
 # Python / tooling
 .venv/
 __pycache__/
+.tools/
+references/
 
 # Node/Vite web app
 web/node_modules/
 web/dist/
 web/.vite/
+web/*.log
 
 # IDE/editor
 .vscode/

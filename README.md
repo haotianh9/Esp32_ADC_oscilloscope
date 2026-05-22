@@ -1,6 +1,6 @@
-# ESP32 ADC Oscilloscope (Dual-Mode Plan)
+# ESP32 ADC Oscilloscope
 
-This repository is structured for a **dual-mode poor-man oscilloscope**:
+Dual-mode poor-man oscilloscope for an ESP32-S3 DevKit-style board:
 
 - **Mode A (Fast scope):** ESP32-S3 native ADC (fast, lower precision)
 - **Mode B (Precision mode):** ADS1256 (slower, much higher resolution)
@@ -13,15 +13,79 @@ web/           Browser client (Web Serial + plotting)
 docs/          Hardware and implementation notes
 protocol/      Binary frame format + command templates
 templates/     Starter config/templates for bring-up
+references/    Ignored temporary reference checkouts
 ```
 
-## Quick implementation phases
+The `references/` folder is intentionally ignored and only used for temporary study material. The firmware and web app do not build against those projects.
 
-1. **Phase 1:** ESP32 native ADC + USB streaming + browser plot
-2. **Phase 2:** Firmware-side trigger + pre-trigger ring buffer
-3. **Phase 3:** ADS1256 single-channel DRDY-driven read path
-4. **Phase 4:** ADS1256 trigger/calibration
-5. **Phase 5:** Better analog front-end (protection, attenuation, coupling)
+## Current implementation
+
+- ESP-IDF app scaffold under `firmware/`
+- TinyUSB CDC JSON command/control path
+- Binary data frame builder with CRC32
+- GPIO18 PWM self-test output
+- GPIO4 / ADC1_CH3 continuous ADC streaming
+- ADS1256 SPI bring-up and single-channel DRDY-driven streaming
+- Browser app under `web/` using Web Serial, a Worker parser, and uPlot
+- Data/control over both CH343 UART (`COM9`) and native TinyUSB CDC
+- Protocol parser tests for frame sync, CRC, partial frames, and sample decode
+- Native ADC max-rate burst benchmark command
+
+## Local port found
+
+The connected board currently appears as:
+
+```text
+COM9 - USB-Enhanced-SERIAL CH343
+VID_1A86 PID_55D3
+```
+
+Use `COM9` for ESP-IDF flashing/monitoring unless Windows assigns a different port after reconnect.
+
+## First bring-up
+
+1. Install ESP-IDF and Node.js if they are not on PATH.
+2. Build firmware:
+
+```powershell
+cd firmware
+idf.py set-target esp32s3
+idf.py build
+idf.py -p COM9 flash
+```
+
+3. Install and run the browser app:
+
+```powershell
+cd web
+npm install
+npm run dev
+```
+
+4. Open the Vite localhost URL in Chrome or Edge.
+5. Click **Connect**, choose the CH343/ESP32 serial device, then click **Stream**.
+6. Start with `1 kSPS`, `115200` baud, and `50 Hz` PWM. Click **Status** and **Probe ADC** before streaming. Once the square wave is stable, raise the sample rate and baud.
+
+## Native ADC benchmark result
+
+With only the GPIO18 divider node connected to GPIO4, the native ADC path was verified at the ESP-IDF continuous driver limit:
+
+```text
+ADC sample rate: 83,333 samples/s
+Sample interval: about 12.0 us/sample
+Practical square-wave viewing: about 8-10 kHz
+Edge/frequency detection: up to about 30-40 kHz, heavily under-sampled
+```
+
+The UART `COM9` bring-up path cannot stream every sample at this rate, so use the firmware-side `adc_burst_test` command for max-rate timing tests.
+
+See `docs/native_adc_benchmark.md`.
+
+## ADS1256 working range
+
+The current ADS1256 module behaves as a `2.5 V` reference ADC even though the module is powered from `5 V`. With `PGA=1`, use it first for the verified `AIN0-AINCOM` self-test range of roughly `0.07 V` to `2.14 V`.
+
+For detailed PGA voltage ranges and sample-rate guidance, see `docs/ads1256_range.md`.
 
 ## Hardware notes
 
@@ -38,7 +102,3 @@ templates/     Starter config/templates for bring-up
 See:
 - `protocol/frame_v1.md`
 - `protocol/control_commands.example.jsonl`
-
-## Next step
-
-Use `firmware/README.md` and `web/README.md` to scaffold each side with ESP-IDF and Vite/TypeScript.

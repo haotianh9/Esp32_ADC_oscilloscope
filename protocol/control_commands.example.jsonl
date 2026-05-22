@@ -1,6 +1,13 @@
+{"cmd":"set_pwm","freq_hz":50,"duty_percent":50,"enabled":true}
 {"cmd":"set_source","source":"esp_adc"}
-{"cmd":"set_adc","fs":80000,"channels":[4],"atten":"12db"}
-{"cmd":"set_ads1256","fs":30000,"channel":"AIN0-AINCOM","pga":1,"buffer":false}
+{"cmd":"set_adc","fs":1000,"channels":[4],"atten":"12db"}
+{"cmd":"adc_probe"}
+{"cmd":"adc_burst_test","fs":83333,"samples":8192,"pwm_hz":10000,"duty_percent":50,"timeout_ms":1000}
+{"cmd":"set_ads1256","fs":30000,"channel":"AIN0-AINCOM","pga":1,"vref_mv":2500,"buffer":false}
 {"cmd":"arm","edge":"rising","level_mv":1200,"hyst_mv":20,"pre":0.25,"samples":4096}
 {"cmd":"stream","enabled":true}
+{"cmd":"status"}
+{"cmd":"ads1256_regs"}
+{"cmd":"ads1256_scan"}
+{"cmd":"pwm_ads_probe","channel":"AIN0-AINCOM","settle_ms":100,"discard":3,"samples":8}
 {"cmd":"stop"}

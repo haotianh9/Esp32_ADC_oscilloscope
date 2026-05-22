@@ -1,0 +1,21 @@
+idf_component_register(
+    SRCS
+        "app_main.c"
+        "adc_fast.c"
+        "ads1256.c"
+        "command.c"
+        "frame.c"
+        "selftest_pwm.c"
+        "trigger.c"
+        "usb_stream.c"
+    INCLUDE_DIRS "."
+    REQUIRES
+        esp_adc
+        esp_timer
+        esp_driver_gpio
+        esp_driver_ledc
+        esp_driver_spi
+        esp_driver_uart
+        esp_tinyusb
+        cjson
+)
