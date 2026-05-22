@@ -13,10 +13,20 @@ web/           Browser client (Web Serial + plotting)
 docs/          Hardware and implementation notes
 protocol/      Binary frame format + command templates
 templates/     Starter config/templates for bring-up
-references/    Ignored temporary reference checkouts
 ```
 
-The `references/` folder is intentionally ignored and only used for temporary study material. The firmware and web app do not build against those projects.
+The firmware and web app are standalone and do not build against copied reference projects. A local `references/` folder may be used for temporary study checkouts, but it is ignored by git.
+
+## Reference Projects Consulted
+
+This project was informed by several open-source projects and official examples. They are references only, not dependencies, and no checked-out reference repo is required to build or run this codebase.
+
+- Espressif ESP-IDF examples: TinyUSB serial device and ADC continuous read examples
+- MatAtBread/esp-scope: ESP32 browser oscilloscope behavior and UI ideas
+- AndyAiCardputer/cardputer-oscilloscope: ESP32-S3 trigger and measurement ideas
+- YordanYanakiev/ADS1256: ADS1256 command/register/SPI behavior reference
+- OscarSaharoy/femtoscope: browser Web Serial oscilloscope flow ideas
+- uPlot: browser plotting library, installed as an npm dependency of the web app
 
 ## Current implementation
 
