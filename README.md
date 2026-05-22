@@ -37,20 +37,13 @@ This project was informed by several open-source projects and official examples.
 - GPIO4 / ADC1_CH3 continuous ADC streaming
 - ADS1256 SPI bring-up and single-channel DRDY-driven streaming
 - Browser app under `web/` using Web Serial, a Worker parser, and uPlot
-- Data/control over both CH343 UART (`COM9`) and native TinyUSB CDC
+- Data/control over both the USB-UART bridge and native TinyUSB CDC
 - Protocol parser tests for frame sync, CRC, partial frames, and sample decode
 - Native ADC max-rate burst benchmark command
 
-## Local port found
+## Serial Port
 
-The connected board currently appears as:
-
-```text
-COM9 - USB-Enhanced-SERIAL CH343
-VID_1A86 PID_55D3
-```
-
-Use `COM9` for ESP-IDF flashing/monitoring unless Windows assigns a different port after reconnect.
+Use the serial port assigned by your OS for flashing and first bring-up. On Windows this will usually look like `COMx`; on Linux/macOS it will usually look like `/dev/ttyUSBx`, `/dev/ttyACMx`, or `/dev/cu.*`.
 
 ## First bring-up
 
@@ -61,7 +54,7 @@ Use `COM9` for ESP-IDF flashing/monitoring unless Windows assigns a different po
 cd firmware
 idf.py set-target esp32s3
 idf.py build
-idf.py -p COM9 flash
+idf.py -p <PORT> flash
 ```
 
 3. Install and run the browser app:
@@ -87,7 +80,7 @@ Practical square-wave viewing: about 8-10 kHz
 Edge/frequency detection: up to about 30-40 kHz, heavily under-sampled
 ```
 
-The UART `COM9` bring-up path cannot stream every sample at this rate, so use the firmware-side `adc_burst_test` command for max-rate timing tests.
+The UART bring-up path cannot stream every sample at this rate, so use the firmware-side `adc_burst_test` command for max-rate timing tests.
 
 See `docs/native_adc_benchmark.md`.
 

@@ -265,7 +265,7 @@ worker.onmessage = (event: MessageEvent) => {
       logLine(`Dropped preview: ${message.droppedPreview}`);
       if (!wrongBaudWarned && framesSeen === 0 && looksLikeWrongBaudPreview(message.droppedPreview)) {
         wrongBaudWarned = true;
-        logLine("Wrong-baud pattern detected. Disconnect, select 115200, then reconnect to COM9.");
+        logLine("Wrong-baud pattern detected. Disconnect, select 115200, then reconnect to the serial port.");
       }
     }
   } else if (message.type === "error") {

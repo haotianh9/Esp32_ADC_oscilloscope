@@ -7,10 +7,10 @@ ESP-IDF firmware for the ESP32-S3 dual-mode scope.
 ```powershell
 idf.py set-target esp32s3
 idf.py build
-idf.py -p COM9 flash
+idf.py -p <PORT> flash
 ```
 
-`COM9` is the active CH343 USB-UART port found on this machine. Re-run the port search if Windows changes it.
+Replace `<PORT>` with the serial port assigned by your OS, such as `COMx` on Windows or `/dev/ttyUSBx` / `/dev/ttyACMx` on Linux.
 
 ## Implemented layout
 
@@ -66,7 +66,7 @@ GPIO16            ADS1256 SYNC/PDWN
 ## Notes
 
 - The firmware uses native USB CDC for the app protocol.
-- The firmware also mirrors the protocol over UART0 at 115200 baud for first bring-up on the CH343 `COM9` bridge.
+- The firmware also mirrors the protocol over UART0 at 115200 baud for first bring-up on a USB-UART bridge.
 - `adc_probe` reports GPIO4 oneshot ADC min/max/avg and is useful before starting the continuous stream.
 - `adc_burst_test` captures internally and returns timing stats as JSON, avoiding UART bandwidth limits at high ADC sample rates.
 - ESP ADC samples are sent as unsigned 16-bit raw counts.
